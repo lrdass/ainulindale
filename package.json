@@ -1,0 +1,12 @@
+{
+  "name": "js-render",
+  "version": "1.0.0",
+  "description": "tiny react-like renderer",
+  "main": "index.js",
+  "license": "GNU",
+  "devDependencies": {
+    "http-server": "^0.12.3",
+    "tslint": "^6.1.3",
+    "typescript": "^4.0.3"
+  }
+}
