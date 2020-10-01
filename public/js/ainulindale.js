@@ -1,36 +1,43 @@
-export const render = (element, parentDom) => {
-    const { type: tagName, props } = element;
-    const isTextualElement = (tagName) => tagName === "text_element";
-    const dom = isTextualElement(tagName)
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.h = exports.render = void 0;
+exports.render = function (element, parentDom) {
+    var tagName = element.type, props = element.props;
+    var isTextualElement = function (tagName) { return tagName === "text_element"; };
+    var dom = isTextualElement(tagName)
         ? document.createTextNode(props === null || props === void 0 ? void 0 : props.nodeValue)
         : document.createElement(tagName);
-    const isListener = (name) => name.startsWith("on");
+    var isListener = function (name) { return name.startsWith("on"); };
     Object.keys(props)
         .filter(isListener)
-        .forEach((name) => {
-        const eventType = name.toLowerCase().substring(2);
+        .forEach(function (name) {
+        var eventType = name.toLowerCase().substring(2);
         dom.addEventListener(eventType, props[name]);
     });
-    const isAttribute = (name) => !isListener && name !== "children";
+    var isAttribute = function (name) { return !isListener && name !== "children"; };
     Object.keys(props)
         .filter(isAttribute)
-        .forEach((propName) => {
+        .forEach(function (propName) {
         dom[propName] = props[propName];
     });
-    const childElements = (props === null || props === void 0 ? void 0 : props.children) || [];
-    childElements.forEach((child) => render(child, dom));
+    var childElements = (props === null || props === void 0 ? void 0 : props.children) || [];
+    childElements.forEach(function (child) { return exports.render(child, dom); });
     parentDom.appendChild(dom);
 };
-export const h = (tagName, attrib, ...args) => {
-    const hTextElement = (value) => {
-        h("text_element", { nodeValue: value });
+exports.h = function (tagName, attrib) {
+    var args = [];
+    for (var _i = 2; _i < arguments.length; _i++) {
+        args[_i - 2] = arguments[_i];
+    }
+    var hTextElement = function (value) {
+        exports.h("text_element", { nodeValue: value });
     };
-    const props = Object.assign({}, attrib);
-    const hasChildren = args.length > 0;
-    const rawChildren = hasChildren ? [].concat(...args) : [];
+    var props = Object.assign({}, attrib);
+    var hasChildren = args.length > 0;
+    var rawChildren = hasChildren ? [].concat.apply([], args) : [];
     props.children = (rawChildren
-        .filter((child) => child !== null)
-        .map((child) => (child instanceof Object ? child : hTextElement(child))));
-    return { tagName, props };
+        .filter(function (child) { return child !== null; })
+        .map(function (child) { return (child instanceof Object ? child : hTextElement(child)); }));
+    return { tagName: tagName, props: props };
 };
 //# sourceMappingURL=ainulindale.js.map

@@ -7,6 +7,7 @@ function tick() {
   console.log("tick");
   const time = new Date().toLocaleTimeString();
   const clockElement = <h1>{time}</h1>;
+  console.log("clock element", clockElement);
   render(clockElement, rootDom);
 }
 

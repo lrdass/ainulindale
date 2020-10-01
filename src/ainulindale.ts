@@ -55,6 +55,7 @@ export const h = (
   attrib: AinuElementProps,
   ...args: any[]
 ) => {
+  console.log(tagName, attrib, args);
   const hTextElement = (value: string) => {
     h("text_element", { nodeValue: value });
   };
