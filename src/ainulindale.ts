@@ -1,3 +1,11 @@
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      [elemName: string]: any;
+    }
+  }
+}
+
 interface AinuElement {
   type: string;
   props?: AinuElementProps;
@@ -5,32 +13,14 @@ interface AinuElement {
 
 interface AinuElementProps {
   id?: string;
-  children?: AinuElement[];
+  children?: AinuElement[] | AinuElement;
   [propName: string]: any;
 }
 
-const element: AinuElement = {
-  type: "div",
-  props: {
-    id: "container",
-    children: [
-      { type: "a", props: { href: "/bar" } },
-      {
-        type: "span",
-        props: {
-          children: [
-            {
-              type: "text_element",
-              props: { nodeValue: "Foo" },
-            },
-          ],
-        },
-      },
-    ],
-  },
-};
-
-const render = (element: AinuElement, parentDom: HTMLElement) => {
+export const render = (
+  element: AinuElement,
+  parentDom: HTMLElement | {} | null
+) => {
   const { type: tagName, props } = element;
 
   const isTextualElement = (tagName: string) => tagName === "text_element";
@@ -55,13 +45,29 @@ const render = (element: AinuElement, parentDom: HTMLElement) => {
     });
 
   const childElements = props?.children || [];
-  childElements.forEach((child) => render(child, dom));
+  (childElements as AinuElement[]).forEach((child) => render(child, dom));
 
-  parentDom.appendChild(dom);
+  (parentDom as HTMLElement).appendChild(dom);
 };
 
-const dom = document.getElementById("root");
+export const h = (
+  tagName: string,
+  attrib: AinuElementProps,
+  ...args: any[]
+) => {
+  const hTextElement = (value: string) => {
+    h("text_element", { nodeValue: value });
+  };
 
-render(element, dom!);
+  const props = Object.assign({}, attrib);
+  const hasChildren = args.length > 0;
+  const rawChildren: AinuElement[] = hasChildren ? [].concat(...args) : [];
 
-const Illuvatar = () => {};
+  props.children = <AinuElement[]>(
+    rawChildren
+      .filter((child) => child !== null)
+      .map((child) => (child instanceof Object ? child : hTextElement(child)))
+  );
+
+  return { tagName, props };
+};

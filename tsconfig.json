@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es2015",
-    "module": "commonjs",
+    "target": "ES6",
     "lib": ["es2015", "es2016", "esnext", "dom"],
     "sourceMap": true,
     "outDir": "public/js/",
@@ -9,6 +8,7 @@
     "noImplicitAny": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
+    "jsx": "react",
     "noImplicitThis": true,
     "alwaysStrict": true,
     "noUnusedLocals": true,
@@ -16,6 +16,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
+    "jsxFactory": "h",
     "plugins": [
       {
         "name": "tslint-language-service"

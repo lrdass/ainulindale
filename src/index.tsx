@@ -1,13 +1,14 @@
 /** @jsx h */
-import { render, h } from "./ainulindale.js";
+import { render, h } from "./ainulindale";
+
 const rootDom = document.getElementById("root");
+
 function tick() {
   console.log("tick");
   const time = new Date().toLocaleTimeString();
-  const clockElement = h("h1", null, time);
+  const clockElement = <h1>{time}</h1>;
   render(clockElement, rootDom);
 }
+
 tick();
 setInterval(tick, 1000);
-//# sourceMappingURL=index.js.map
-
