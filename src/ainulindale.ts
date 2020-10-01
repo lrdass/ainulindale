@@ -21,6 +21,7 @@ export const render = (
   element: AinuElement,
   parentDom: HTMLElement | {} | null
 ) => {
+  console.log("on render, element: ", element);
   const { type: tagName, props } = element;
 
   const isTextualElement = (tagName: string) => tagName === "text_element";
@@ -54,21 +55,28 @@ export const h = (
   tagName: string,
   attrib: AinuElementProps,
   ...args: any[]
-) => {
-  console.log(tagName, attrib, args);
-  const hTextElement = (value: string) => {
-    h("text_element", { nodeValue: value });
+): AinuElement => {
+  console.log("tag name: ", tagName);
+  console.log("attribs: ", attrib);
+  console.log("args", args);
+
+  debugger;
+
+  const hTextElement = (value: string): AinuElement => {
+    return h("text_element", { nodeValue: value });
   };
 
   const props = Object.assign({}, attrib);
+
   const hasChildren = args.length > 0;
   const rawChildren: AinuElement[] = hasChildren ? [].concat(...args) : [];
 
   props.children = <AinuElement[]>(
     rawChildren
-      .filter((child) => child !== null)
+      .filter((child) => child && child !== null)
       .map((child) => (child instanceof Object ? child : hTextElement(child)))
   );
 
-  return { tagName, props };
+  console.log({ type: tagName, props });
+  return { type: tagName, props };
 };
